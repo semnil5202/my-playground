@@ -1,9 +1,6 @@
-import { useState } from 'react';
+import { RouterProvider } from 'react-router-dom';
+import router from './router';
 
-const App = () => {
-  const [greeting, setGreeting] = useState<string>('hello');
-
-  return <div>{greeting}</div>;
-};
-
-export default App;
+export default function App() {
+  return <RouterProvider router={router} />;
+}
