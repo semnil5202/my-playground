@@ -45,7 +45,7 @@ const router = createBrowserRouter(
     };
   }),
   {
-    basename: process.env.PUBLIC_URL,
+    basename: '/semnil5202-react-playground/',
   }
 );
 
