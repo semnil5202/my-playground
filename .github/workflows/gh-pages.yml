@@ -26,16 +26,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # need .env PUBLIC_URL = /github-url/
-      - name: Set PUBLIC_URL
-        run: |
-          PUBLIC_URL=$(echo $GITHUB_REPOSITORY | sed -r 's/^.+\/(.+)$/\/\1\//')
-          echo PUBLIC_URL=$PUBLIC_URL > .env
-
       - run: npm ci
         if: steps.cache.outputs.cache-hit != 'true'
 
       - run: npm run build
+        env:
+          PUBLIC_URL: '/semnil5202-react-playground/'
 
       - uses: peaceiris/actions-gh-pages@v3
         with:
