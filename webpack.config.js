@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { DefinePlugin } = require('webpack');
 const production = (process.env.NODE_ENV = 'production');
 
 module.exports = {
@@ -15,20 +16,7 @@ module.exports = {
     rules: [
       {
         test: /\.css$/i,
-        exclude: /\.module\.css$/i,
         use: ['style-loader', 'css-loader'],
-      },
-      {
-        test: /\.module\.css$/i,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              modules: true,
-            },
-          },
-        ],
       },
       {
         test: /\.(js|jsx|ts|tsx)$/,
@@ -75,5 +63,8 @@ module.exports = {
       template: './public/index.html',
     }),
     new webpack.HotModuleReplacementPlugin(),
+    new DefinePlugin({
+      'process.env.PUBLIC_URL': JSON.stringify(process.env.PUBLIC_URL),
+    }),
   ],
 };
