@@ -3,7 +3,7 @@ import RootPage from './pages/RootPage';
 import GlobalErrorPage from './pages/GlobalErrorPage';
 import Home from './pages/Home';
 import { createBrowserRouter } from 'react-router-dom';
-import ErrorBoundary from './pages/ErrorBoundary';
+import ErrorBoundaryPage from './pages/ErrorBoundaryPage';
 
 interface RoutesProps {
   path: string;
@@ -25,7 +25,7 @@ const routes: RoutesProps[] = [
       },
       {
         path: 'error-boundary',
-        element: <ErrorBoundary />,
+        element: <ErrorBoundaryPage />,
       },
     ],
   },

@@ -7,7 +7,7 @@ export default function AsideBar() {
     <aside
       css={css`
         width: 320px;
-        height: 100vh;
+        height: 100%;
         margin-right: 12px;
         background-color: aliceblue;
       `}
