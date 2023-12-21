@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack serve --mode development --open --hot",
+    "build": "tsc && webpack --mode production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "se-een",
