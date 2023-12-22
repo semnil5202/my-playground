@@ -1,3 +1,5 @@
+import ApiError from '../utils/ApiError';
+
 interface FetchProps {
   contentType?: string;
   abort?: boolean;
@@ -44,10 +46,16 @@ const initPayload = async ({
   });
 
   if (response.status >= 500) {
-    throw { name: `Server ${method} Error`, status: response.status };
+    throw new ApiError({
+      name: `Server ${method} Error`,
+      status: response.status,
+    });
   }
   if (response.status >= 400) {
-    throw { name: `Client ${method} Error`, status: response.status };
+    throw new ApiError({
+      name: `Client ${method} Error`,
+      status: response.status,
+    });
   }
 
   return response;
