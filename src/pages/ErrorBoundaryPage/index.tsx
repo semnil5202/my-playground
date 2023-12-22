@@ -9,8 +9,9 @@ const NORMAL_URL = 'https://jsonplaceholder.typicode.com/posts';
 export default function ErrorBoundary() {
   return (
     <div>
-      ErrorBoundary 컴포넌트와 ApiErrorBoundary 컴포넌트 테스트 공간입니다.
-      비정상 버튼은 1대1 비율로 Api Error와 Unknown Error를 발생시킵니다.
+      GlobalErrorBoundary 컴포넌트와 ApiErrorBoundary 컴포넌트 테스트
+      공간입니다. 비정상 버튼은 1대1 비율로 Api Error와 Unknown Error를
+      발생시킵니다.
       <GlobalErrorBoundary>
         <ApiErrorBoundary>
           <Suspense fallback={<div>loading...</div>}>
