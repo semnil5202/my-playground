@@ -1,69 +1,89 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
+import ApiError from '../../../utils/ApiError';
 import RetryFetch from './RetryFetch';
-import { ApiErrorType } from '../types/util';
 
 interface Props {
   children: ReactNode;
   fallback?: ReactNode;
 }
 
-interface State {
-  shouldHandleError: boolean;
-  shouldRethrowError: boolean;
-  error: ApiErrorType | null;
-}
+type State =
+  | {
+      error: null;
+      errorDetail: null;
+    }
+  | {
+      error: Error;
+      errorDetail: null;
+    }
+  | {
+      error: ApiError;
+      errorDetail: 'client' | 'server' | 'unauthorized';
+    };
 
 export default class ApiErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = {
-      shouldHandleError: false,
-      shouldRethrowError: false,
+    this.state = this.initErrorBoundaryState();
+  }
+
+  initErrorBoundaryState() {
+    return {
       error: null,
+      errorDetail: null,
     };
   }
 
-  static getDerivedStateFromError(error: ApiErrorType): State {
-    if (error instanceof Error) {
-      console.log('here');
-      return {
-        shouldHandleError: true,
-        shouldRethrowError: false,
-        error,
-      };
-    }
-    if (error.status >= 400) {
-      return {
-        shouldHandleError: true,
-        shouldRethrowError: false,
-        error,
-      };
+  static getDerivedStateFromError(error: Error): State {
+    if (error instanceof ApiError) {
+      if (error.status >= 500) {
+        return {
+          error,
+          errorDetail: 'server',
+        };
+      }
+
+      if (error.status >= 400) {
+        return {
+          error,
+          errorDetail: 'client',
+        };
+      }
     }
 
     return {
-      shouldHandleError: false,
-      shouldRethrowError: true,
       error,
+      errorDetail: null,
     };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {}
-
-  initErrorBoundaryState() {
-    this.setState({
-      shouldHandleError: false,
-      shouldRethrowError: false,
-      error: null,
-    });
+  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+    console.log(error, errorInfo);
   }
 
   render() {
-    console.log('ErrorBoundary Rendering');
-
-    if (this.state.shouldHandleError) {
-      return <RetryFetch onClickRetry={() => this.initErrorBoundaryState()} />;
+    if (!this.state.error && !this.state.errorDetail) {
+      return this.props.children;
     }
 
-    return this.props.children;
+    if (this.state.errorDetail === 'client') {
+      return (
+        <RetryFetch
+          errorCase={this.state.errorDetail}
+          onClickRetry={() => this.setState(this.initErrorBoundaryState())}
+        />
+      );
+    }
+
+    if (this.state.errorDetail === 'server') {
+      return (
+        <RetryFetch
+          errorCase={this.state.errorDetail}
+          onClickRetry={() => this.setState(this.initErrorBoundaryState())}
+        />
+      );
+    }
+
+    throw new Error('unknown error');
   }
 }

@@ -1,30 +1,49 @@
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
-import { Posts } from '../types/util';
+import { useState } from 'react';
+import { Posts } from '../types';
 import customFetch from '../../../apis/customFetch';
+import ApiError from '../../../utils/ApiError';
 
-export default function PostContainer() {
+type StatusType = null | Promise<void> | ApiError;
+
+export default function PostContainer({
+  url,
+  explanation,
+}: {
+  url: string;
+  explanation: string;
+}) {
   const [posts, setPosts] = useState<Posts[] | null>(null);
-  const [isError, setIsError] = useState<Error | null>(null);
+  const [status, setStatus] = useState<StatusType>(null);
 
   const onClickGetPosts = async () => {
     try {
-      const postsData = await customFetch.get<Posts[]>(
-        'https://jsonplaceholder.typicode.com/pos1ts',
-        { abort: true }
+      setStatus(
+        new Promise((resolve) => {
+          resolve();
+        })
       );
+
+      const postsData = await customFetch.get<Posts[]>(url, {
+        abort: true,
+      });
+
+      setStatus(null);
       setPosts(postsData);
     } catch (e) {
-      setIsError(new Error('error'));
+      const error = e as ApiError;
+      setStatus(error);
     }
   };
 
-  if (isError) throw isError;
+  if (status instanceof Promise) throw status;
+  if (status && status instanceof ApiError)
+    throw Math.random() > 0.5 ? status : new Error('unknown Error');
 
   if (!posts)
     return (
       <div>
-        <h2>click button!</h2>
+        <h2>{explanation}</h2>
         <button
           css={css`
             text-align: center;
@@ -47,8 +66,8 @@ export default function PostContainer() {
   if (posts.length === 0) return <div>temp</div>;
 
   return (
-    <section>
-      <h2>click button!</h2>
+    <>
+      <h2>{explanation}</h2>
       <button
         css={css`
           text-align: center;
@@ -65,9 +84,11 @@ export default function PostContainer() {
       >
         처음으로
       </button>
-      {posts.map((post) => (
-        <p key={post.id}>{post.title}</p>
-      ))}
-    </section>
+      <section>
+        {posts.map((post) => (
+          <p key={post.id}>{post.title}</p>
+        ))}
+      </section>
+    </>
   );
 }
