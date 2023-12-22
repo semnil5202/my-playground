@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import RootPage from './pages/RootPage';
-import GlobalErrorPage from './pages/GlobalErrorPage';
+import NotFound from './pages/NotFound';
 import Home from './pages/Home';
 import { createBrowserRouter } from 'react-router-dom';
 import ErrorBoundaryPage from './pages/ErrorBoundaryPage';
@@ -17,7 +17,7 @@ const routes: RoutesProps[] = [
   {
     path: '/',
     element: <RootPage />,
-    errorElement: <GlobalErrorPage />,
+    errorElement: <NotFound />,
     children: [
       {
         path: '',
@@ -36,7 +36,7 @@ const router = createBrowserRouter(
     const childrenRoutes = route.children?.map((childRoute) => ({
       path: childRoute.path,
       element: childRoute.element,
-      errorElement: <GlobalErrorPage />,
+      errorElement: <NotFound />,
     }));
 
     return {
