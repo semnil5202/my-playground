@@ -60,7 +60,12 @@ module.exports = {
       React: 'react',
     }),
     new HtmlWebpackPlugin({
+      filename: 'index.html',
       template: './public/index.html',
+    }),
+    new HtmlWebpackPlugin({
+      filename: '404.html',
+      template: './public/404.html',
     }),
     new webpack.HotModuleReplacementPlugin(),
     new DefinePlugin({
