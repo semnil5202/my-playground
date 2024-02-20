@@ -1,18 +1,12 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
-import { Posts } from '../types';
-import customFetch from '../../../apis/customFetch';
+import { Posts } from '../../../types';
 import ApiError from '../../../utils/ApiError';
+import customFetch from '../../../apis/fetch/customFetch';
 
 type StatusType = null | Promise<void> | ApiError;
 
-export default function PostContainer({
-  url,
-  explanation,
-}: {
-  url: string;
-  explanation: string;
-}) {
+export default function PostContainer({ url, explanation }: { url: string; explanation: string }) {
   const [posts, setPosts] = useState<Posts[] | null>(null);
   const [status, setStatus] = useState<StatusType>(null);
 
