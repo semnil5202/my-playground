@@ -1,4 +1,4 @@
-import ApiError from '../utils/ApiError';
+import ApiError from '../../utils/ApiError';
 
 interface FetchProps {
   contentType?: string;
@@ -9,20 +9,14 @@ interface Payload {
   url: string;
   contentType: string;
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-  body?: {};
+  body?: any;
   abort: boolean;
 }
 
 const BASE_URL = '';
 let abortController: null | AbortController = null;
 
-const initPayload = async ({
-  url,
-  method,
-  body,
-  contentType,
-  abort,
-}: Payload) => {
+const initPayload = async ({ url, method, body, contentType, abort }: Payload) => {
   const apiUrl = `${BASE_URL}${url}`;
   const userToken = 'USER_TOKEN';
   const headers: HeadersInit = {
@@ -80,7 +74,7 @@ const customFetch = {
 
   async post<T = unknown>(
     url: string = '',
-    body: {} = {},
+    body: any = {},
     { contentType = 'application/json', abort = false }: FetchProps = {}
   ) {
     const response = await initPayload({
@@ -98,7 +92,7 @@ const customFetch = {
 
   async put<T = unknown>(
     url: string = '',
-    body: {} = {},
+    body: any = {},
     { contentType = 'application/json', abort = false }: FetchProps = {}
   ) {
     const response = await initPayload({
@@ -116,7 +110,7 @@ const customFetch = {
 
   async patch<T = unknown>(
     url: string = '',
-    body: {} = {},
+    body: any = {},
     { contentType = 'application/json', abort = false }: FetchProps = {}
   ) {
     const response = await initPayload({
