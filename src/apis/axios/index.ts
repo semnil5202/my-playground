@@ -1,7 +1,5 @@
 import { Posts } from '../../types';
-import Http from './http';
-
-const http = new Http();
+import { http } from './http';
 
 export const getPosts = () => {
   return http.get<Posts[]>('https://jsonplaceholder.typicode.com/posts');

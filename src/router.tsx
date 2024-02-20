@@ -4,6 +4,7 @@ import NotFound from './pages/NotFound';
 import Home from './pages/Home';
 import { createBrowserRouter } from 'react-router-dom';
 import ErrorBoundaryPage from './pages/ErrorBoundaryPage';
+import MakeUseQueryPage from './pages/MakeUseQueryPage';
 
 interface RoutesProps {
   path: string;
@@ -26,6 +27,10 @@ const routes: RoutesProps[] = [
       {
         path: 'error-boundary',
         element: <ErrorBoundaryPage />,
+      },
+      {
+        path: 'make-use-query',
+        element: <MakeUseQueryPage />,
       },
     ],
   },
