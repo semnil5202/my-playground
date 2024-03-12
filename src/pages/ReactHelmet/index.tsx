@@ -33,7 +33,7 @@ export default function ReactHelmet() {
 
   return (
     <>
-      <HelmetComp title="리액트 헬멧" description="리액트 헬멧으로 메타 태그 동적 할당 중입니다." />
+      <HelmetComp title="리액트 헬멧" />
       <div>react-helmet-async를 활용한 SEO 최적화 및 og meta 태그 동적 할당 테스트 공간입니다.</div>
       <h3>title</h3>
       <p>{heads?.title}</p>
